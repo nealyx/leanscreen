@@ -76,14 +76,17 @@ The `.lean` form pairs each `theorem`/`lemma`/`def` with the `/-- ... -/`
 doc comment above it and screens every documented declaration in the file;
 undocumented declarations are skipped with a note. The default is the free
 fast screen. `--deep` adds the judges and probe on your own
-`ANTHROPIC_API_KEY`, with `--budget USD` as a hard stop. `--json` writes
-one full payload object per line to stdout, everything else to stderr.
+`ANTHROPIC_API_KEY`. `--budget USD` checks estimated next-call costs before
+starting another call; it is not a hard billing cap. Actual call costs can
+exceed the estimate and the requested budget. `--json` writes one full payload
+object per line to stdout, everything else to stderr.
 
 Exit codes are a CI contract: `0` means nothing was rejected (no defect
 found, which is not a certification), `1` means at least one pair was
 rejected on reject-tier evidence, `2` means a usage or configuration
-error. A formalization repo can run `leanscreen check src/*.lean` in CI
-and fail the build on unscreened defects.
+error. Each invocation accepts one file, for example
+`leanscreen check src/MyFile.lean`. Invoke it separately for additional files
+and preserve each nonzero exit code in your CI job.
 
 ## Claude Code plugin
 
